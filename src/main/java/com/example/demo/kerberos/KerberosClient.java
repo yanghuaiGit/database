@@ -1,5 +1,7 @@
 package com.example.demo.kerberos;
 
+import com.sun.security.auth.callback.TextCallbackHandler;
+
 import javax.security.auth.Subject;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
@@ -19,19 +21,20 @@ public class KerberosClient {
             LoginContext context = new LoginContext("myKerberosLogin", null,
                     null, conf);
             //权限认证
+            //login 成功 会对一个新的Subjec对象填入验证信息
             context.login();
             System.out.println(context.getSubject().getPrincipals());
 
-            //用户的业务逻辑
+            //用户的业务逻辑 使用login()方法返回的Subject对象实现一些特殊功能，假设登录成功
             //java的权限认证就和用户的业务逻辑分离了
-            Subject.doAs( context.getSubject(), new PrivilegedAction() {
+            Subject subject = context.getSubject();
+            Subject.doAs(subject, new PrivilegedAction() {
                 @Override
                 public Object run() {
                     System.out.println(context.getSubject());
                     return null;
                 }
             });
-
 
 
         } catch (LoginException e) {
