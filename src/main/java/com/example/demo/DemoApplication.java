@@ -55,9 +55,6 @@ public class DemoApplication {
 //
 //        Integer.parseInt("1294701817204");
         ConfigurableApplicationContext run = SpringApplication.run(DemoApplication.class, args);
-        KafkaSend kafkaSend = run.getBean("kafkaSend", KafkaSend.class);
-        kafkaSend.test();
-
     }
 
 //    public static void main(String[] args) {

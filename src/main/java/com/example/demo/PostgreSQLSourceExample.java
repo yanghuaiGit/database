@@ -19,6 +19,7 @@ package com.example.demo;
 
 import com.alibaba.ververica.cdc.connectors.postgres.PostgreSQLSource;
 import com.alibaba.ververica.cdc.debezium.StringDebeziumDeserializationSchema;
+import oracle.sql.OracleSQLOutput;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 
