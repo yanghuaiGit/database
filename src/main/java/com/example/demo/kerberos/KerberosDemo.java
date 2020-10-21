@@ -24,7 +24,7 @@ public class KerberosDemo {
         final Subject subject = new Subject();
 
         final Krb5LoginModule krb5LoginModule = new Krb5LoginModule();
-        final Map<String,String> optionMap = new HashMap<String,String>();
+        final Map<String, String> optionMap = new HashMap<String, String>();
 
         if (propertiesFileName == null) {
             //optionMap.put("ticketCache", "/tmp/krb5cc_1000");
@@ -40,7 +40,7 @@ public class KerberosDemo {
             optionMap.put("isInitiator", "true");
         } else {
             File f = new File(propertiesFileName);
-            System.out.println("======= loading property file ["+f.getAbsolutePath()+"]");
+            System.out.println("======= loading property file [" + f.getAbsolutePath() + "]");
             Properties p = new Properties();
             InputStream is = new FileInputStream(f);
             try {
@@ -48,11 +48,11 @@ public class KerberosDemo {
             } finally {
                 is.close();
             }
-            optionMap.putAll((Map)p);
+            optionMap.putAll((Map) p);
         }
         optionMap.put("debug", "true"); // switch on debug of the Java implementation
 
-        krb5LoginModule.initialize(subject, null, new HashMap<String,String>(), optionMap);
+        krb5LoginModule.initialize(subject, null, new HashMap<String, String>(), optionMap);
 
         boolean loginOk = krb5LoginModule.login();
         System.out.println("======= login: " + loginOk);

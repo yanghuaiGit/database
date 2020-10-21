@@ -1,9 +1,5 @@
 package com.example.demo.file;
 
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelWriter;
-import com.alibaba.excel.write.metadata.WriteSheet;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -72,12 +68,12 @@ public class TopFileReader {
             int t = 0;
             while ((tempString = reader.readLine()) != null) {
                 t++;
-                int i =0;
-                boolean flag =false;
+                int i = 0;
+                boolean flag = false;
                 for (handlerline handlerline : handlerl) {
-                    if(i ==0){
-                        if (!handlerline.isHadnler(tempString)){
-                            flag =true;
+                    if (i == 0) {
+                        if (!handlerline.isHadnler(tempString)) {
+                            flag = true;
                             break;
                         }
                     }
@@ -86,9 +82,11 @@ public class TopFileReader {
                     }
                     i++;
                 }
-                if(flag){break;}
+                if (flag) {
+                    break;
+                }
 //                if(t%17==0 ){
-                if(tempString.equals("--") ){
+                if (tempString.equals("--")) {
                     index++;
                 }
             }
@@ -106,9 +104,9 @@ public class TopFileReader {
 
 
 //            System.out.println("total:" + total.total.divide(new BigDecimal(index + ""), 4, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal("1024"),4,BigDecimal.ROUND_HALF_UP));
-            System.out.println("free:" + total.free.divide(new BigDecimal(index + ""), 4, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal("1024"),4,BigDecimal.ROUND_HALF_UP));
-            System.out.println("used:" + total.used.divide(new BigDecimal(index + ""), 4, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal("1024"),4,BigDecimal.ROUND_HALF_UP));
-            System.out.println("buff_cache:" + total.buff_cache.divide(new BigDecimal(index + ""), 4, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal("1024"),4,BigDecimal.ROUND_HALF_UP));
+            System.out.println("free:" + total.free.divide(new BigDecimal(index + ""), 4, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal("1024"), 4, BigDecimal.ROUND_HALF_UP));
+            System.out.println("used:" + total.used.divide(new BigDecimal(index + ""), 4, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal("1024"), 4, BigDecimal.ROUND_HALF_UP));
+            System.out.println("buff_cache:" + total.buff_cache.divide(new BigDecimal(index + ""), 4, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal("1024"), 4, BigDecimal.ROUND_HALF_UP));
         } catch (
                 IOException e) {
             e.printStackTrace();
@@ -132,42 +130,32 @@ public class TopFileReader {
             String tempString;
             // 一次读入一行，直到读入null为文件结束
             while ((tempString = reader.readLine()) != null) {
-                if(tempString.contains("load average:") &&  handlerl.get(0).isHadnler(tempString)){
+                if (tempString.contains("load average:") && handlerl.get(0).isHadnler(tempString)) {
                     Total total = new Total();
-                    boolean flag =false;
+                    boolean flag = false;
                     for (handlerline handlerline : handlerl) {
                         if (handlerline.isHadnler(tempString)) {
                             handlerline.handlerLine(tempString, total);
                         }
                     }
-                    while((tempString = reader.readLine()) != null){
+                    while ((tempString = reader.readLine()) != null) {
                         for (handlerline handlerline : handlerl) {
                             if (handlerline.isHadnler(tempString)) {
                                 handlerline.handlerLine(tempString, total);
                             }
                         }
-                        if(tempString.equals("--") ){
-                            flag =true;
+                        if (tempString.equals("--")) {
+                            flag = true;
                             break;
                         }
                     }
-                    if(flag){
+                    if (flag) {
                         data.add(total);
                     }
-                }else{
+                } else {
                     continue;
                 }
             }
-//            EasyExcel.write("/Users/yanghuai/Desktop/1.xlsx", Total.class).sheet("写入方法一").doWrite(data);
-            ExcelWriter excelWriter = EasyExcel.write("/Users/yanghuai/Desktop/1.xlsx", Total.class).build();
-
-            WriteSheet writeSheet = EasyExcel.writerSheet("写入方法二").build();
-
-            excelWriter.write(data, writeSheet);
-
-            /// 千万别忘记finish 会帮忙关闭流
-
-            excelWriter.finish();
         } catch (
                 IOException e) {
             e.printStackTrace();
@@ -265,7 +253,7 @@ public class TopFileReader {
                     String group = m.group("host");
                     try {
                         Date parse = simpleDateFormat.parse(group);
-                       return parse.compareTo(startTime) >= 0 && parse.compareTo(endTime) <= 0;
+                        return parse.compareTo(startTime) >= 0 && parse.compareTo(endTime) <= 0;
 
                     } catch (Exception e) {
                         e.printStackTrace();

@@ -5,15 +5,16 @@ import javax.security.auth.login.Configuration;
 import java.util.HashMap;
 import java.util.Map;
 
-public class  Krb5Configuration extends Configuration {
+public class Krb5Configuration extends Configuration {
     private AppConfigurationEntry[] entry = new AppConfigurationEntry[1];
 
     Map paramMap = new HashMap();
 
     private AppConfigurationEntry krb5LoginModule = new AppConfigurationEntry("com.sun.security.auth.module.Krb5LoginModule", AppConfigurationEntry.LoginModuleControlFlag.REQUIRED, paramMap);
+
     @Override
     public AppConfigurationEntry[] getAppConfigurationEntry(String name) {
-        if(entry[0] == null){
+        if (entry[0] == null) {
             paramMap.put("debug", "true");
 
             //1.enter the username and passsword

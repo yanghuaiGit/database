@@ -41,11 +41,11 @@ public class PatternTest {
     public static final String PORT_KEY = "port";
 
     public static void main(String[] args) {
-        Map<String, Map<String,Object>> o =new Gson().fromJson("{\"key\":{\"key1\":\"23\"}}", Map.class);
+        Map<String, Map<String, Object>> o = new Gson().fromJson("{\"key\":{\"key1\":\"23\"}}", Map.class);
         String test = "20190828-1346-687476c4-5efe-4f1a-b698-4e1b27cb5cc0,1981346-004D812,1,PRINT,FinishJob,1,1,null,,,,null,,,332ae088-de57-4ccd-8d4f-8e74cb29f884,134621499,006580,null,null,134601545,东风本田汽车有限公司\\\\二工厂\\\\总装2科\\\\品质系\\\\品质1班,null,,134610,默认成本中心,杨静,MAF-4QG5B92,172.21.57.47,4C-EB-42-CB-74-A1,006580,2019-08-28 08:31:24.0,20190828T003026781,null,,null,,-1,134600011,HUB1,134600013,Radar1,134600015,Node1,134600026,F1-IT-2F,Multi-model Print Driver 2,2019年CIVIC各科VQ单台不良推移 .xlsx,,2019-08-28 08:30:55.0,2019-08-28 08:33:00.0,1,0,1,1,0,1,1,0,0,0,0,A3,297,420,Mono,1,134650,公开,0,,0,TC101294346266,F2-AF2-01,Node1,HUB1,0,0,1346,0,,,,PCL,,,,,Mono,1,1,A3,1,0,1,1,0,1,1,,null,,null,,YES,1,0.0,0.0,0.0,0.0,0.0,0.0,N,null,0.0,,,,,,,,,,,null,null,null,null,null";
-       String hah = "";
+        String hah = "";
         Matcher matcher2 = HIVE_JDBC_PATTERN2.matcher(hah);
-        while(matcher2.find()){
+        while (matcher2.find()) {
             System.out.println(matcher2.group("param"));
         }
         System.out.println(test.split(",").length);
@@ -53,8 +53,8 @@ public class PatternTest {
         System.out.println(text.split(" ").length);
         String data = "\\34\\34c\\3242";
 
-        System.out.println("data->>"+data);
-        System.out.println("data->>"+data.replaceAll("\\\\","\\\\\\\\"));
+        System.out.println("data->>" + data);
+        System.out.println("data->>" + data.replaceAll("\\\\", "\\\\\\\\"));
 
 
         if (data.contains("\\")) {

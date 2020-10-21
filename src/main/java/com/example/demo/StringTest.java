@@ -18,15 +18,8 @@
 package com.example.demo;
 
 import com.google.gson.Gson;
-import org.apache.commons.collections.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * StringTest
@@ -51,31 +44,30 @@ public class StringTest {
         System.out.println(UUID.randomUUID().toString());
         HashMap<String, Object> hashMap = new HashMap<>();
 
-        hashMap.put("msg.key1","v1");
-        hashMap.put("msg.key2","v2");
-        hashMap.put("msg.key1","v3");
+        hashMap.put("msg.key1", "v1");
+        hashMap.put("msg.key2", "v2");
+        hashMap.put("msg.key1", "v3");
         json(hashMap);
         hashMap.clear();
         HashMap<String, Object> data1 = new HashMap<>();
-        data1.put("key1","v1");
-        data1.put("key2","v2");
+        data1.put("key1", "v1");
+        data1.put("key2", "v2");
         HashMap<String, Object> data2 = new HashMap<>();
-        data2.put("k4","v4");
-        data1.put("key3",data2 );
-        hashMap.put("msg",data1);
+        data2.put("k4", "v4");
+        data1.put("key3", data2);
+        hashMap.put("msg", data1);
         json(hashMap);
     }
 
-    public static  void json(Map map){
+    public static void json(Map map) {
         Gson gson = new Gson();
         System.out.println(gson.toJson(map));
 
     }
 
 
-
-    public static void test1(){
-        System.out.println(camelize("hdfsreader","reader"));
+    public static void test1() {
+        System.out.println(camelize("hdfsreader", "reader"));
         String s = "\001";
         System.out.println(s);
 
@@ -139,14 +131,14 @@ public class StringTest {
     }
 
     private static String camelize(String pluginName, String suffix) {
-       int pos = pluginName.indexOf(suffix);
+        int pos = pluginName.indexOf(suffix);
         String left = pluginName.substring(0, pos);
         left = left.toLowerCase(Locale.ENGLISH);
         suffix = suffix.toLowerCase(Locale.ENGLISH);
         StringBuffer sb = new StringBuffer();
         sb.append(left + "." + suffix + ".");
-        sb.append(left.substring(0,1).toUpperCase() + left.substring(1));
-        sb.append(suffix.substring(0,1).toUpperCase() + suffix.substring(1));
+        sb.append(left.substring(0, 1).toUpperCase() + left.substring(1));
+        sb.append(suffix.substring(0, 1).toUpperCase() + suffix.substring(1));
         return sb.toString();
     }
 }

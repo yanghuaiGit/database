@@ -39,7 +39,7 @@ public class GsonTest {
 
     public static void main(String[] args) {
 
-   
+
         System.out.println(Date.valueOf("2020-09-07 17:19:05"));
         String job = "{\n" +
                 "    \"stime\":\"value:2020-03-23 23:23:21\\\\,nextvalue:${body.etime}\\\\,type:timestamp/datetime/date/long/int\",\n" +
@@ -50,7 +50,7 @@ public class GsonTest {
                 "        \"test\":\"value:2020-03-23 23:23:21\"\n" +
                 "    },\n" +
                 "    \"dkucode\":\"huy+weuiri,ertine\"\n" +
-                "}" ;
+                "}";
 
         Map<String, Object> map = gson.fromJson(job, Map.class);
         System.out.println(map.toString());

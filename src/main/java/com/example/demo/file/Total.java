@@ -1,11 +1,8 @@
 package com.example.demo.file;
 
-import com.alibaba.excel.annotation.ExcelProperty;
-
 import java.math.BigDecimal;
 
 public class Total {
-    @ExcelProperty("load1")
     public BigDecimal cpuload_1 = BigDecimal.ZERO;
     public BigDecimal cpuload_5 = BigDecimal.ZERO;
     public BigDecimal cpuload_15 = BigDecimal.ZERO;
@@ -17,7 +14,6 @@ public class Total {
     public BigDecimal sy = BigDecimal.ZERO;
     public BigDecimal id = BigDecimal.ZERO;
     public BigDecimal wa = BigDecimal.ZERO;
-    @ExcelProperty("cacheUsed")
     public BigDecimal cacheUsed = BigDecimal.ZERO;
 
     public BigDecimal getCpuload_1() {
