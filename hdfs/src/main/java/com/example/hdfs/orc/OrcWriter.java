@@ -11,7 +11,7 @@ import org.apache.orc.Writer;
 
 public class OrcWriter {
     public static void main(String[] args) throws Exception {
-        Path testFilePath = new Path("/tmp/test.orc");
+        Path testFilePath = new Path("/tmp/test1.orc");
         Configuration conf = new Configuration();
         TypeDescription schema = TypeDescription.fromString("struct<field1:int,field2:int,field3:int>");
         Writer writer = OrcFile.createWriter(testFilePath, OrcFile.writerOptions(conf).setSchema(schema).compress(CompressionKind.SNAPPY));
