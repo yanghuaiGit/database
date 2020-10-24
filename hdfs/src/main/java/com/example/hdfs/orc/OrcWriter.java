@@ -11,7 +11,7 @@ import org.apache.orc.Writer;
 
 public class OrcWriter {
     public static void main(String[] args) throws Exception {
-        Path testFilePath = new Path("/tmp/test1.orc");
+        Path testFilePath = new Path("/tmp/orc/test.orc");
         Configuration conf = new Configuration();
         TypeDescription schema = TypeDescription.fromString("struct<field1:int,field2:int,field3:int>");
         Writer writer = OrcFile.createWriter(testFilePath, OrcFile.writerOptions(conf).setSchema(schema).compress(CompressionKind.SNAPPY));
@@ -22,7 +22,7 @@ public class OrcWriter {
 
         final int BATCH_SIZE = batch.getMaxSize();
         // add 1500 rows to file
-        for (int r = 0; r < 15000000; ++r) {
+        for (int r = 0; r < 10; ++r) {
             int row = batch.size++;
             first.vector[row] = r;
             second.vector[row] = r * 3;
