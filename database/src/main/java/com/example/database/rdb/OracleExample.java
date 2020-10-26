@@ -47,7 +47,7 @@ public class OracleExample {
         long start = System.currentTimeMillis();
         System.out.println("开始时间" + new Timestamp(start));
         for (int index = 0; index < 10; index++) {
-            insertBatch(0, 0L, 105);
+            insertBatch(0, 10);
         }
         long prevSum = 0;
 //        select();
@@ -111,7 +111,7 @@ public class OracleExample {
     }
 
 
-    public static void insertBatch(int i, Long limit, int batchSize) {
+    public static void insertBatch(int i, int batchSize) {
         new Thread(() -> {
             PreparedStatement ps;
             try (Connection connection = DbUtil.getConnection("jdbc:oracle:thin:@172.16.100.42:1521:ORCL", "roma_logminer", "abc123")) {
