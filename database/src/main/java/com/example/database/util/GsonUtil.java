@@ -52,6 +52,7 @@ public class GsonUtil {
     private static Gson getGson() {
         GSON = new GsonBuilder()
                 .setPrettyPrinting()
+                .registerTypeAdapter(Date.class,new DateAdapter())
                 .create();
         try {
             Field factories = Gson.class.getDeclaredField("factories");

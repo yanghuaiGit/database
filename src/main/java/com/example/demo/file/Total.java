@@ -1,20 +1,39 @@
 package com.example.demo.file;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
+
 import java.math.BigDecimal;
 
 public class Total {
+    public String time;
+
+    @ExcelProperty("load1")
     public BigDecimal cpuload_1 = BigDecimal.ZERO;
+    @ExcelIgnore
     public BigDecimal cpuload_5 = BigDecimal.ZERO;
+    @ExcelIgnore
     public BigDecimal cpuload_15 = BigDecimal.ZERO;
+    @ExcelIgnore
     public BigDecimal total = BigDecimal.ZERO;
+    @ExcelIgnore
     public BigDecimal buff_cache = BigDecimal.ZERO;
+    @ExcelIgnore
     public BigDecimal used = BigDecimal.ZERO;
+    @ExcelIgnore
     public BigDecimal free = BigDecimal.ZERO;
+    @ExcelIgnore
     public BigDecimal us = BigDecimal.ZERO;
+    @ExcelIgnore
     public BigDecimal sy = BigDecimal.ZERO;
+    @ExcelIgnore
     public BigDecimal id = BigDecimal.ZERO;
+    @ExcelIgnore
     public BigDecimal wa = BigDecimal.ZERO;
+    @ExcelProperty("memoryUtilization")
     public BigDecimal cacheUsed = BigDecimal.ZERO;
+
+
 
     public BigDecimal getCpuload_1() {
         return cpuload_1;
@@ -110,5 +129,13 @@ public class Total {
 
     public void setCacheUsed(BigDecimal cacheUsed) {
         this.cacheUsed = cacheUsed;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }
