@@ -22,7 +22,6 @@ import com.example.database.util.DbUtil;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**
@@ -44,20 +43,19 @@ public class MysqlExample extends BaseJdbc {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 //        new JdbcExample().select();
-        new MysqlExample().testtimestamp();
+        for (int i = 10; i < 1000; i++) {
+            new MysqlExample().testtimestamp(i);
+        }
     }
 
 
-    public void testtimestamp() throws SQLException, ClassNotFoundException {
+    public void testtimestamp(long id) throws SQLException, ClassNotFoundException {
         try (Connection connection = DbUtil.getConnection("jdbc:mysql://127.0.0.1:3306/dujie?useSSL=false", "root", "rootroot")) {
-            String sql = "INSERT INTO dujie.kudu (id, name, age, datetime, date, timestamp) VALUES (?, ?, ?,?,?,? )";
+            String sql = "INSERT INTO dujie.test1 (id, user_id, name) VALUES (?, ?, ?)";
             ArrayList<Object> objects = new ArrayList<>();
-            objects.add(7);
-            objects.add("213");
-            objects.add(213);
-            objects.add(new Timestamp(System.currentTimeMillis()));
-            objects.add(new Timestamp(System.currentTimeMillis()));
-            objects.add(new Timestamp(System.currentTimeMillis()));
+            objects.add(id);
+            objects.add(1);
+            objects.add("21w3");
             execute(connection, sql, objects);
         }
     }
