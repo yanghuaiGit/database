@@ -20,11 +20,16 @@ package util;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.io.InputStream;
@@ -32,6 +37,11 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static org.apache.http.entity.ContentType.APPLICATION_JSON;
 
 /**
  * @author jiangbo
@@ -97,6 +107,28 @@ public class UrlUtil {
                 HttpEntity entity = response.getEntity();
                 respBody = EntityUtils.toString(entity,charset);
             }
+
+            response.close();
+            return respBody;
+        },MAX_RETRY_TIMES,SLEEP_TIME_MILLI_SECOND,false);
+    }
+
+
+    public static String put(CloseableHttpClient httpClient, String url, Map<String,String>body) throws Exception{
+        return RetryUtil.executeWithRetry(() -> {
+            String respBody = null;
+            HttpPut httpPut = new HttpPut(url);
+            // 编码格式转换
+            StringEntity requestEntity = new StringEntity("{ \"state\":\"KILLED\"}\n",APPLICATION_JSON);
+            requestEntity.setContentType("application/json");
+            httpPut.setEntity(requestEntity);
+            //设置超时时间，防止阻塞
+            RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(CONNECTION_TIMEOUT_MILLI_SECOND).setConnectTimeout(CONNECTION_TIMEOUT_MILLI_SECOND).build();
+            httpPut.setConfig(requestConfig);
+            CloseableHttpResponse response = httpClient.execute(httpPut);
+
+            HttpEntity entity = response.getEntity();
+            respBody = EntityUtils.toString(entity,charset);
 
             response.close();
             return respBody;
