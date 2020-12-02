@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.example.database.util;
+package util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

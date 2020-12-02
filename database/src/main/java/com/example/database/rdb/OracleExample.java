@@ -17,8 +17,8 @@
  */
 package com.example.database.rdb;
 
-import com.example.database.util.DbUtil;
 import org.apache.commons.lang3.RandomUtils;
+import util.DbUtil;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -86,10 +86,10 @@ public class OracleExample {
                 ps.setObject(1, i++);
 //                ps.addBatch();
                 ps.execute();
-                if (i ==10) {
+                if (i == 10) {
 //                    ps.executeBatch();
 //                    ps.clearBatch();
-                    i=0;
+                    i = 0;
                     connection.commit();
                 }
             }

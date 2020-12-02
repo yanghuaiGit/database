@@ -18,10 +18,11 @@
 
 package com.example.database.prometheus;
 
-import com.example.database.util.UrlUtil;
+
 import io.prometheus.client.exporter.PushGateway;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import util.UrlUtil;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

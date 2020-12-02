@@ -1,30 +1,25 @@
 package com.example.database.rdb;
 
-import com.example.database.util.GsonUtil;
-import com.google.gson.Gson;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import org.bson.json.JsonWriter;
-import org.bson.json.JsonWriterSettings;
+import util.GsonUtil;
 
-import java.io.StringWriter;
-import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class Mongodb {
 
 
     public static void main(String[] args) {
-
-
 
 
         MongoClient mongoClient = getClientWithUrl("mongodb://root:abc123@kudu5:27017/tudou?authSource=admin");
@@ -49,14 +44,14 @@ public class Mongodb {
         Document CountryDetails = new Document()
                 .append("Country", Country);
 
-        Document Description = new Document().append("Description",new Document().append("decription1","3").append("decription2",4));
+        Document Description = new Document().append("Description", new Document().append("decription1", "3").append("decription2", 4));
 
 
 //select * from `30707`
         //insert
         for (int i = 0; i < 10; i++) {
             HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
-            objectObjectHashMap.put("json","json1");
+            objectObjectHashMap.put("json", "json1");
             Document document =
 //                    new Document()
                     new Document("ActiveStatus", "Inactive")
@@ -65,7 +60,7 @@ public class Mongodb {
 //                    .append("Descriptions",Description)
 //                    .append("name", arrayList)
 //                    .append("map",objectObjectHashMap)
-                    .append("time",new Date());
+                            .append("time", new Date());
 //                    .append("haha",new Document().append("time",new Date()));
             String[] names = document.keySet().toArray(new String[0]);
 
@@ -144,10 +139,10 @@ public class Mongodb {
         return new MongoClient(adds, credentials);
     }
 
-    private static Object conventDocument(Object object){
-        if (object instanceof Document){
+    private static Object conventDocument(Object object) {
+        if (object instanceof Document) {
             return ((Document) object).toJson();
-        } else if( object instanceof  List || object instanceof Map){
+        } else if (object instanceof List || object instanceof Map) {
             return GsonUtil.GSON.toJson(object);
         }
         return object;

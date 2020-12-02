@@ -18,7 +18,7 @@
 
 package com.example.database.rdb;
 
-import com.example.database.util.DbUtil;
+import util.DbUtil;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -63,19 +63,19 @@ public class Hana {
             ResultSet catalogs = connection.getMetaData().getCatalogs();
             String schema = connection.getSchema();
 
-            String sql ="select SCHEMA_NAME,TABLE_NAME,TABLE_TYPE from TABLES";
+            String sql = "select SCHEMA_NAME,TABLE_NAME,TABLE_TYPE from TABLES";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             ArrayList<String> objects = new ArrayList<>();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 objects.add(resultSet.getString(1));
                 System.out.println(resultSet.getString(1));
                 System.out.println(resultSet.getString(2));
                 System.out.println(resultSet.getString(3));
             }
 
-          System.out.println("1");
+            System.out.println("1");
 
         }
 

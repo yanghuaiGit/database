@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.example.database.util;
+package util;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;

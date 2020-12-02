@@ -18,10 +18,9 @@
 package com.example.database.rdb;
 
 import com.example.database.BaseJdbc;
-import com.example.database.util.DbUtil;
+import util.DbUtil;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 

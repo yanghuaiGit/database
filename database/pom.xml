@@ -17,7 +17,7 @@
         <java.version>1.8</java.version>
         <flink.version>1.10.0</flink.version>
         <prometheus.version>0.3.0</prometheus.version>
-        <http.version>4.5.3</http.version>
+
     </properties>
 
     <dependencies>
@@ -112,13 +112,11 @@
             <artifactId>simpleclient_pushgateway</artifactId>
             <version>${prometheus.version}</version>
         </dependency>
-
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>${http.version}</version>
+            <artifactId>util</artifactId>
+            <groupId>com.example</groupId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
-
     </dependencies>
 
 

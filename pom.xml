@@ -18,6 +18,7 @@
         <module>database</module>
         <module>hadoop</module>
         <module>hdfs</module>
+        <module>util</module>
     </modules>
 
     <properties>
