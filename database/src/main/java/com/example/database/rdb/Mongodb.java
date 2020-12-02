@@ -15,6 +15,7 @@ import org.bson.json.JsonWriter;
 import org.bson.json.JsonWriterSettings;
 
 import java.io.StringWriter;
+import java.sql.Timestamp;
 import java.util.*;
 
 
@@ -26,11 +27,11 @@ public class Mongodb {
 
 
 
-//        MongoClient mongoClient = getClientWithUrl("mongodb://root:abc123@kudu5:27017/tudou?authSource=admin");
+        MongoClient mongoClient = getClientWithUrl("mongodb://root:abc123@kudu5:27017/tudou?authSource=admin");
 //        //连接到数据库
-//        MongoDatabase mongoDatabase = mongoClient.getDatabase("tudou");
+        MongoDatabase mongoDatabase = mongoClient.getDatabase("tudou");
 //
-//        MongoCollection<Document> collection = mongoDatabase.getCollection("30707");
+        MongoCollection<Document> collection = mongoDatabase.getCollection("12");
 
 
         ArrayList arrayList = new ArrayList<>(2);
@@ -53,40 +54,40 @@ public class Mongodb {
 
 //select * from `30707`
         //insert
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10; i++) {
             HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
             objectObjectHashMap.put("json","json1");
             Document document =
 //                    new Document()
                     new Document("ActiveStatus", "Inactive")
-                            .append("12",12)
-                    .append("CountryDetails", CountryDetails)
-                    .append("Descriptions",Description)
-                    .append("name", arrayList)
-                    .append("map",objectObjectHashMap)
-                    .append("time",new Date())
-                    .append("haha",new Document().append("time",new Date()));
+//                            .append("12",12)
+//                    .append("CountryDetails", CountryDetails)
+//                    .append("Descriptions",Description)
+//                    .append("name", arrayList)
+//                    .append("map",objectObjectHashMap)
+                    .append("time",new Date());
+//                    .append("haha",new Document().append("time",new Date()));
             String[] names = document.keySet().toArray(new String[0]);
 
 
-            System.out.println(GsonUtil.GSON.toJson(document));
-
-            for (int ii = 0; ii < names.length; ii++) {
-                Object tempdata = document.get(names[ii]);
-                if (tempdata instanceof List) {
-                    System.out.println(conventDocument(tempdata));
-                } else if (tempdata instanceof Document) {
-                    ((Document) tempdata).get("time");
-                    System.out.println(((Document) tempdata).toJson());
-                }else if (tempdata instanceof Map) {
-                    System.out.println(conventDocument(tempdata));
-                }  else {
-                    System.out.println(tempdata);
-                }
-            }
-
-            GsonUtil.GSON.fromJson((String) document.toJson(), GsonUtil.gsonMapTypeToken);
-//            collection.insertOne(document);
+//            System.out.println(GsonUtil.GSON.toJson(document));
+//
+//            for (int ii = 0; ii < names.length; ii++) {
+//                Object tempdata = document.get(names[ii]);
+//                if (tempdata instanceof List) {
+//                    System.out.println(conventDocument(tempdata));
+//                } else if (tempdata instanceof Document) {
+//                    ((Document) tempdata).get("time");
+//                    System.out.println(((Document) tempdata).toJson());
+//                }else if (tempdata instanceof Map) {
+//                    System.out.println(conventDocument(tempdata));
+//                }  else {
+//                    System.out.println(tempdata);
+//                }
+//            }
+//
+//            GsonUtil.GSON.fromJson((String) document.toJson(), GsonUtil.gsonMapTypeToken);
+            collection.insertOne(document);
         }
 //        Gson gson = new Gson();
 //        FindIterable findIterable = collection.find();

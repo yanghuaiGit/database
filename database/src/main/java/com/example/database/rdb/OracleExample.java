@@ -21,7 +21,12 @@ import com.example.database.util.DbUtil;
 import org.apache.commons.lang3.RandomUtils;
 
 import java.math.BigDecimal;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.concurrent.atomic.LongAdder;
 
 /**
@@ -47,7 +52,8 @@ public class OracleExample {
         long start = System.currentTimeMillis();
         System.out.println("开始时间" + new Timestamp(start));
         for (int index = 0; index < 10; index++) {
-            insertBatch(0, 10);
+//            insertBatch(0, 10);
+            test(index++);
         }
         long prevSum = 0;
 //        select();
@@ -69,16 +75,25 @@ public class OracleExample {
         }
     }
 
-    public static void test() {
+    public static void test(int id) {
         PreparedStatement ps = null;
-        try (Connection connection = DbUtil.getConnection("jdbc:oracle:thin:@kudu5:1521:helowin", "tudou", "abc123")) {
-            String sql = "INSERT INTO \"TUDOU\".\"CDC\" (\"ID\",\"USER_ID\",\"NAME\") values (?,?,?)  ";
+        try (Connection connection = DbUtil.getConnection("jdbc:oracle:thin:@172.16.100.42:1521:ORCL", "roma_logminer", "abc123")) {
+            String sql = "INSERT INTO \"ROMA_LOGMINER\".\"test\" (\"id\") values (?)  ";
             ps = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            connection.setAutoCommit(false);
+            int i = 0;
+            while (true) {
+                ps.setObject(1, i++);
+//                ps.addBatch();
+                ps.execute();
+                if (i ==10) {
+//                    ps.executeBatch();
+//                    ps.clearBatch();
+                    i=0;
+                    connection.commit();
+                }
+            }
 
-            ps.setObject(1, 1);
-            ps.setObject(2, 1);
-            ps.setObject(3, "test");
-            ps.execute();
 
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
