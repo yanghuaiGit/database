@@ -21,6 +21,7 @@ package com.example.hadoop.resourcemanager;
 import java.util.HashSet;
 
 import static util.YarnWebUtil.killJobByLikeName;
+import static util.YarnWebUtil.killUnContainsJob;
 
 public class ResourceManagerWeb {
 
@@ -29,11 +30,15 @@ public class ResourceManagerWeb {
         String port = "8088";
         HashSet<String> strings = new HashSet<>(8);
         strings.add("Flink session_default_a");
+        strings.add("flinksession_4_dev_default_a");
         strings.add("flinksession_3_1_x_default_a");
         strings.add("flinksession_4_1_x_default_a");
+        strings.add("run_sync_task_mysql_kudu_1607392664589");
+
+
         while (true) {
-//            killUnContainsJob(host, port, "running", strings);
-//            killUnContainsJob(host, port, "accepted", strings);
+            killUnContainsJob(host, port, "running", strings);
+            killUnContainsJob(host, port, "accepted", strings);
             killJobByLikeName(host, port, "accepted", "cronJob");
             killJobByLikeName(host, port, "running", "cronJob");
             Thread.sleep(3000L);
