@@ -47,13 +47,18 @@ public class PgsqlExample extends BaseJdbc {
 
 
     public void testtimestamp() throws SQLException, ClassNotFoundException {
-        try (Connection connection = DbUtil.getConnection("jdbc:postgresql://172.16.100.155:5432/test1", "ps", "root")) {
-            String sql = "INSERT INTO schema1.time1 (id, timestamp1, datetim1) VALUES (?, ?, ?)";
-            ArrayList<Object> objects = new ArrayList<>();
-            objects.add(7);
-            objects.add(new Timestamp(System.currentTimeMillis()));
-            objects.add(new Timestamp(System.currentTimeMillis()));
-            execute(connection, sql, objects);
+        try (Connection connection = DbUtil.getConnection("jdbc:postgresql://172.16.8.193:5432/shitou_test", "root", "postgresql")) {
+
+            String sql = "SELECT a.attname AS name,t.typname AS type, a.attlen AS length, a.atttypmod AS lengthvar \n" +
+                    ", a.attnotnull AS notnull , b.description AS comment\n" +
+                    "FROM pg_class c, pg_attribute a LEFT JOIN  pg_description b ON a.attrelid = b.objoid\n" +
+                    "AND a.attnum = b.objsubid, pg_type t WHERE c.relname = 'age' AND a.attnum > 0\n" +
+                    "AND a.attrelid = c.oid AND a.atttypid = t.oid ORDER BY  a.attnum";
+//            ArrayList<Object> objects = new ArrayList<>();
+//            objects.add(7);
+//            objects.add(new Timestamp(System.currentTimeMillis()));
+//            objects.add(new Timestamp(System.currentTimeMillis()));
+            queryBystream(connection, sql);
         }
     }
 }

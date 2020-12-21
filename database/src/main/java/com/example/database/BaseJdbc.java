@@ -42,8 +42,9 @@ public class BaseJdbc {
     //https://www.jianshu.com/p/c7c5dbe63019
     protected void queryBystream(Connection connection, String sql) throws SQLException {
         ps = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-        ps.setFetchSize(Integer.MIN_VALUE);
-        ps.setFetchDirection(ResultSet.FETCH_REVERSE);
+
+//        ps.setFetchSize(Integer.MIN_VALUE);
+//        ps.setFetchDirection(ResultSet.FETCH_REVERSE);
         ps.setQueryTimeout(2000);
         resultSet = ps.executeQuery();
         print();
@@ -76,6 +77,7 @@ public class BaseJdbc {
             for (int i = 1; i < columnCount + 1; i++) {
                 System.out.println(String.format("{columnName->{%s},columnData->{%s}},", resultSet.getMetaData().getColumnName(i), resultSet.getObject(i)));
             }
+            System.out.println("-----------------------------");
         }
     }
 }

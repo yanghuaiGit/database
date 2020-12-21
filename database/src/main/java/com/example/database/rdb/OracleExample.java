@@ -17,16 +17,20 @@
  */
 package com.example.database.rdb;
 
+import com.example.database.BaseJdbc;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.RandomUtils;
 import util.DbUtil;
+import util.FileUtil;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.UUID;
 import java.util.concurrent.atomic.LongAdder;
 
 /**
@@ -35,7 +39,7 @@ import java.util.concurrent.atomic.LongAdder;
  * @author by dujie@dtstack.com
  * @Date 2020/9/8
  */
-public class OracleExample {
+public class OracleExample extends BaseJdbc {
     //    private static volatile AtomicLong longAdder = new AtomicLong(0L);
     private static volatile LongAdder longAdder = new LongAdder();
 
@@ -53,27 +57,57 @@ public class OracleExample {
         System.out.println("开始时间" + new Timestamp(start));
         for (int index = 0; index < 10; index++) {
 //            insertBatch(0, 10);
-            test(index++);
+//            test(index++);
         }
         long prevSum = 0;
 //        select();
         //开始
         //结束
-
+        OracleExample oracleExample = new OracleExample();
+        String dataTemplate = "{%s:%s}";
+        int index = 1;
         while (true) {
-            long l = System.currentTimeMillis();
-            Thread.sleep(5000);
-            long l1 = (System.currentTimeMillis() - l) / 1000;
-            long sum = longAdder.sum();
-            System.out.println("qps:" + new BigDecimal(sum - prevSum + "").divide(new BigDecimal(l1), 3, BigDecimal.ROUND_HALF_UP));
-            System.out.println("输出sum->" + sum);
-            prevSum = sum;
-            if (System.currentTimeMillis() - start > (10 * 60 * 1000) + (15 * 1000)) {
-                System.out.println("开始时间：" + new Timestamp(start) + "--结束时间" + new Timestamp(System.currentTimeMillis()) + " 总数" + sum + " qps->" + new BigDecimal(sum + "").divide(new BigDecimal(10 * 60), 3, BigDecimal.ROUND_HALF_UP));
-                System.exit(0);
+            ArrayList<String> data = new ArrayList<>(8000000);
+            for (int i = (8000000 * (index - 1)); i < 8000000 * index; i++) {
+                ArrayList<Integer> ids = new ArrayList<>();
+                String insert = "insert into \"test23\" values(?,?,?)";
+                String update = "update \"test23\" set \"name\" =? where \"id\" =?";
+                String delete = "delete from \"test23\" where  \"id\" =? ";
+                try (Connection connection = DbUtil.getConnection("jdbc:oracle:thin:@172.16.100.42:1521:ORCL", "tudou", "abc123")) {
+                    ids.add(i);
+                    oracleExample.execute(connection, insert, Lists.newArrayList(i, UUID.randomUUID().toString().substring(1, RandomUtils.nextInt(1, 13)), i++));
+                    data.add(String.format(dataTemplate, i, "insert"));
+
+                    oracleExample.execute(connection, update, Lists.newArrayList(UUID.randomUUID().toString().substring(1, RandomUtils.nextInt(1, 13)), i));
+                    data.add(String.format(dataTemplate, i, "update"));
+
+                    if (RandomUtils.nextInt(1, 10) < 7) {
+                        oracleExample.execute(connection, delete, Lists.newArrayList(i));
+                        data.add(String.format(dataTemplate, i, "delete"));
+                    }
+
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
             }
+            FileUtil.writeData(data, "/Users/yanghuai/IdeaProjects/myProject/database/tmp/oracle" + index + ".txt");
+            index++;
         }
+//        while (true) {
+//            long l = System.currentTimeMillis();
+//            Thread.sleep(5000);
+//            long l1 = (System.currentTimeMillis() - l) / 1000;
+//            long sum = longAdder.sum();
+//            System.out.println("qps:" + new BigDecimal(sum - prevSum + "").divide(new BigDecimal(l1), 3, BigDecimal.ROUND_HALF_UP));
+//            System.out.println("输出sum->" + sum);
+//            prevSum = sum;
+//            if (System.currentTimeMillis() - start > (10 * 60 * 1000) + (15 * 1000)) {
+//                System.out.println("开始时间：" + new Timestamp(start) + "--结束时间" + new Timestamp(System.currentTimeMillis()) + " 总数" + sum + " qps->" + new BigDecimal(sum + "").divide(new BigDecimal(10 * 60), 3, BigDecimal.ROUND_HALF_UP));
+//                System.exit(0);
+//            }
+//        }
     }
+
 
     public static void test(int id) {
         PreparedStatement ps = null;
@@ -93,8 +127,6 @@ public class OracleExample {
                     connection.commit();
                 }
             }
-
-
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         } catch (ClassNotFoundException e) {

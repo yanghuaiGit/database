@@ -19,6 +19,7 @@
         <module>hadoop</module>
         <module>hdfs</module>
         <module>util</module>
+        <module>kafka</module>
     </modules>
 
     <properties>
