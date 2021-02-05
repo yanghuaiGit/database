@@ -1,4 +1,4 @@
-    - 所有表：`.*` or `.\\..*`
+    - 所有表：`.*` or `.*\\..*`
     - canal schema下所有表： `canal\\..*`
     - canal下的以canal打头的表：`canal\\.canal.*`
-    - canal schema下的一张表：`canal\\.test1`
+    - canal schema下的一张表：`canal.test1`
