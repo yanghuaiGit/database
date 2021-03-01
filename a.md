@@ -36,6 +36,7 @@ SQL：`select is_cdc_enabled, name from  sys.databases where name = 'tudou'`
 <div align=center>
 <img src="/images/Sqlserver3.png" />
 </div>
+<br/>
 0：未启用；1：启用
 
 
