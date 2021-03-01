@@ -28,6 +28,7 @@ EXEC sys.sp_cdc_enable_db;
 <img src="../../images/SqlserverCDC/Sqlserver8.png" />
 </div>
 <br/>
+
 我们首先观察dbo下新增了一张**systranschemas**表，**systranschemas**表用于跟踪事务发布和快照发布中发布的项目中的架构更改。
 
 | 列名称 | 数据类型 | 说明 |
