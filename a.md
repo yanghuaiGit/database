@@ -17,18 +17,25 @@
 #### 1、查询SqlServer数据库版本
 SQL：`SELECT @@VERSION`
 结果：
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/662771/1576140716538-1de495e3-ec65-4650-8da1-b9368b903d77.png#align=left&display=inline&height=318&margin=%5Bobject%20Object%5D&name=image.png&originHeight=318&originWidth=822&size=32062&status=done&style=none&width=822)
+<div align=center>
+  <img src="/images/Sqlserver1.png" />
+</div>
 
 
 #### 2、查询当前用户权限，必须为 sysadmin 固定服务器角色的成员才允许对数据库启用CDC(变更数据捕获)功能
 SQL：`exec sp_helpsrvrolemember 'sysadmin'`
-结果：![image.png](https://cdn.nlark.com/yuque/0/2019/png/662771/1576140692007-fead968d-f99c-4344-838d-feade019519d.png#align=left&display=inline&height=262&margin=%5Bobject%20Object%5D&name=image.png&originHeight=262&originWidth=1086&size=69041&status=done&style=none&width=1086)
+结果：
+<div align=center>
+<img src="/images/Sqlserver2.png" />
+</div>
 
 
 #### 3、查询数据库是否已经启用CDC(变更数据捕获)功能
 SQL：`select is_cdc_enabled, name from  sys.databases where name = 'tudou'`
 结果：
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/662771/1576141038209-f0e70734-06f0-45bd-81dd-435a52741415.png#align=left&display=inline&height=142&margin=%5Bobject%20Object%5D&name=image.png&originHeight=142&originWidth=334&size=13137&status=done&style=none&width=334)
+<div align=center>
+<img src="/images/Sqlserver3.png" />
+</div>
 0：未启用；1：启用
 
 
@@ -44,12 +51,17 @@ GO
 
 重复第三步操作，确认数据库已经启用CDC(变更数据捕获)功能。
 
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/662771/1576141312508-ed9abbc5-2bb6-4d7c-9fef-aa399cb937a7.png#align=left&display=inline&height=148&margin=%5Bobject%20Object%5D&name=image.png&originHeight=148&originWidth=332&size=11892&status=done&style=none&width=332)
+<div align=center>
+<img src="/images/Sqlserver4.png" />
+</div>
+
 
 #### 5、查询表是否已经启用CDC(变更数据捕获)功能
 SQL：`select name,is_tracked_by_cdc from sys.tables where name = 'test';`
 结果：
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/662771/1576141574020-ea7228f9-adc8-451b-b437-52cb2752af59.png#align=left&display=inline&height=126&margin=%5Bobject%20Object%5D&name=image.png&originHeight=126&originWidth=362&size=13602&status=done&style=none&width=362)
+<div align=center>
+<img src="/images/Sqlserver5.png" />
+</div>
 0：未启用；1：启用
 
 
@@ -69,7 +81,9 @@ supports_net_changes：是否为捕获实例生成一个净更改函数，0：�
 
 
 重复第五步操作，确认表已经启用CDC(变更数据捕获)功能。
-![image.png](https://cdn.nlark.com/yuque/0/2019/png/662771/1576142069684-f80ec6bc-44a2-4b14-bebd-f379e4bf9dc3.png#align=left&display=inline&height=132&margin=%5Bobject%20Object%5D&name=image.png&originHeight=132&originWidth=364&size=13422&status=done&style=none&width=364)
+<div align=center>
+<img src="/images/Sqlserver6.png" />
+</div>
 
 至此，表`test`启动CDC(变更数据捕获)功能配置完成。
 
