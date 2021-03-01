@@ -41,6 +41,7 @@ EXEC sys.sp_cdc_enable_db;
 
 
 数据库下新增了名为cdc的schema，其实也新增了cdc用户。cdc下新增了以下四张表：
+<br/>
 **1、captured_columns**
 为在捕获实例中跟踪的每一列返回一行。 默认情况下，将捕获源表中的所有列。 但是，如果为变更数据捕获启用了源表，则可以通过指定列列表将列包括在捕获范围内或排除在捕获范围之外。
 当没有任何业务表开启了CDC时，该表为空。
@@ -133,7 +134,9 @@ NULL = 更改表在数据库的默认文件组中。 |
 
 
 cdc下新增以下函数：
-**1、**fn_cdc_get_all_changes_
+<br/>
+
+**1、fn_cdc_get_all_changes_**
 为在指定日志序列号 (LSN) 范围内应用到源表的每项更改返回一行。 如果源行在该间隔内有多项更改，则每项更改都会表示在返回的结果集中。 除了返回更改数据外，四个元数据列还提供了将更改应用到另一个数据源所需的信息。 行筛选选项可控制元数据列的内容以及结果集中返回的行。 当指定“all”行筛选选项时，针对每项更改将只有一行来标识该更改。 当指定“all update old”选项时，更新操作会表示为两行：一行包含更新之前已捕获列的值，另一行包含更新之后已捕获列的值。此枚举函数是在对源表启用变更数据捕获时创建的。 函数名称是派生的，并使用 **cdc.fn_cdc_get_all_changes_**_capture_instance_ 格式，其中 _capture_instance_ 是在源表启用变更数据捕获时为捕获实例指定的值。
 
 | 列名称 | 数据类型 | 说明 |
@@ -200,6 +203,7 @@ sys.sp_cdc_enable_table
 </div>
 <br/>
 此时，cdc下新增了一张名为dbo_kudu_CT的表，对于任意开启CDC的业务表而言，都会在其对应的cdc schema下创建一张格式为${schema}_${table}_CT的表。
+
 **1、dbo_kudu_CT：**
 对源表启用变更数据捕获时创建的更改表。 该表为对源表执行的每个插入和删除操作返回一行，为对源表执行的每个更新操作返回两行。 如果在启用源表时未指定更改表的名称，则会使用一个派生的名称。 名称的格式为 cdc。capture_instance _CT 其中 capture_instance 是源表的架构名称和格式 schema_table 的源表名称。 例如，如果对 AdventureWorks 示例数据库中的表 Person 启用了变更数据捕获，则派生的更改表名称将 cdc.Person_Address_CT。
 
@@ -244,7 +248,7 @@ sys.sp_cdc_enable_table
 </div>
 <br/>
 
-**
+
 ### 4、采集原理
 #### 1、insert/delete
 对于insert和delete类型的数据变更，对于每一行变更都会在对应的${schema}_${table}_CT表中增加一行记录。对于insert，id，user_id，name记录的是insert之后的value值；对于delete，id，user_id，name记录的是delete之前的value值；
