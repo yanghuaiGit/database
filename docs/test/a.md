@@ -64,14 +64,11 @@ EXEC sys.sp_cdc_enable_db;
 | 列名称 | 数据类型 | 说明 |
 | --- | --- | --- |
 | object_id | int | 更改表的 ID。 在数据库中是唯一的。 |
-| version | int | 标识为仅供参考。 不支持。 不保证以后的兼容性。
-对于 SQL Server 2012 (11.x)，此列始终返回 0。 |
+| version | int | 标识为仅供参考。 不支持。 不保证以后的兼容性。对于 SQL Server 2012 (11.x)，此列始终返回 0。 |
 | source_object_id | int | 为变更数据捕获启用的源表的 ID。 |
 | capture_instance | sysname | 用于命名特定于实例的跟踪对象的捕获实例的名称。 默认情况下，该名称从源架构名称加上源表名称派生，格式 schemaname_sourcename。 |
-| start_lsn | binary(10) | 日志序列号 (LSN)，表示查询更改表中的更改数据时的低端点。
-NULL = 尚未建立低端点。 |
-| end_lsn | binary(10) | 标识为仅供参考。 不支持。 不保证以后的兼容性。
-对于 SQL Server 2008，此列始终返回 NULL。 |
+| start_lsn | binary(10) | 日志序列号 (LSN)，表示查询更改表中的更改数据时的低端点。NULL = 尚未建立低端点。 |
+| end_lsn | binary(10) | 标识为仅供参考。 不支持。 不保证以后的兼容性。对于 SQL Server 2008，此列始终返回 NULL。 |
 | supports_net_changes | bit | 对更改表启用了查询净更改支持。 |
 | has_drop_pending | bit | 捕获进程收到关于源表已被删除的通知。 |
 | role_name | sysname | 用于访问更改数据的数据库角色的名称。NULL = 未使用角色。 |
