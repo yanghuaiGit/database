@@ -1,298 +1,79 @@
-# Restapi Reader
+# SqlServer配置CDC
+<!-- TOC -->
 
-## 一、插件名称
-名称：restapireader
+- [SqlServer配置CDC](#sqlserver配置cdc)
+  - [1、查询SqlServer数据库版本](#1查询sqlserver数据库版本)
+  - [2、查询当前用户权限，必须为 sysadmin 固定服务器角色的成员才允许对数据库启用CDC(变更数据捕获)功能](#2查询当前用户权限必须为 sysadmin 固定服务器角色的成员才允许对数据库启用cdc变更数据捕获功能)
+  - [3、查询数据库是否已经启用CDC(变更数据捕获)功能](#3查询数据库是否已经启用cdc变更数据捕获功能)
+  - [4、对数据库数据库启用CDC(变更数据捕获)功能](#4对数据库数据库启用cdc变更数据捕获功能)
+  - [5、查询表是否已经启用CDC(变更数据捕获)功能](#5查询表是否已经启用cdc变更数据捕获功能)
+  - [6、对表启用CDC(变更数据捕获)功能](#6对表启用cdc变更数据捕获功能)
+  - [7 数据库配置](#7-数据库配置)
 
+注：SqlServer自2008版本开始支持CDC(变更数据捕获)功能，本文基于SqlServer 2017编写。
 
-## 二、参数说明
+<!-- /TOC -->
 
-
-
-- url
-    - 描述：http请求地址
-    - 必选：是
-    - 字段类型：string
-
-<br/>
-
-- requestMode
-    - 描述：http请求方式
-    - 必选：是
-    - 字段类型：string
-    - 可选值：post get
-
-<br/>
-
-- header
-    - 描述: 请求的header
-    - 注意: 当请求方式为post时，Content-Type需为application/json，目前只支持post请求的json格式，不支持表单提交
-    - 必选: 否
-    - 字段类型：数组
-```json
- "header": [
-              {
-                "name": "token",
-                "value": "${uuid}"
-              },
-              {
-                "name": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-```
-
-- 参数解析
-    - name 请求的key 必选
-    - value key的值 必选
-
-<br/>
-
-- body
-    - 描述：对应post请求的body参数
-    - 注意：参数支持动态参数替换，内置变量以及动态变量的加减(只支持动态变量的一次加减运算)，
-        - 内置变量
-            - ${currentTime}当前时间，获取当前时间，格式为yyyy-MM-dd HH:mm:ss类型
-            - ${intervalTime}间隔时间，代表参数 intervalTime 的值
-            - ${uuid} 随机字符串 32位的随机字符串
-        - param/body/response变量
-            - ${param.key} 对应get请求param参数里key对应的值
-            - ${body.key}对应post请求的body参数里key对应的值
-            - ${response.key} 对应返回值里的key对应的值
-    - 必选：否
-    - 字段类型：数组
-```json
-"body": [
-           {
-                "name": "stime",
-                "value": "${currentTime}",
-                "nextValue": "${body.stime}+${intervalTime}",
-                "format": "yyyy-mm-dd hh:mm:ss"
-              },
-              {
-                "name": "etime",
-                "value": "${body.stime}+${intervalTime}",
-                "format": "yyyy-mm-dd hh:mm:ss"
-              }
-            ],
-```
-
-- 参数解析
-    - name 请求的key 必选
-    - value key的值 必选
-    - nextValue 除第一次请求之外，key对应的值 非必选
-    - format 格式化模板 非必选，如果要求请求格式是日期格式，必须填写
-
-<br/>
-
-- param
-    - 描述：对应get请求参数
-    - 注意：参数支持动态参数替换，内置变量以及动态变量的加减(只支持动态变量的一次加减运算)
-        - 内置变量
-            - ${currentTime}当前时间，获取当前时间，格式为yyyy-MM-dd HH:mm:ss类型
-            - ${intervalTime}间隔时间，代表参数 intervalTime 的值
-            - ${uuid} 随机字符串 32位的随机字符串
-        - param/body/response变量
-            - ${param.key} 对应get请求param参数里key对应的值
-            - ${body.key}对应post请求的body参数里key对应的值
-            - ${response.key} 对应返回值里的key对应的值
-    - 必选：否
-    - 字段类型：数组
-```json
-"param": [
-              {
-                "name": "stime",
-                "value": "${currentTime}",
-                "nextValue": "${body.stime}+${intervalTime}",
-                "format": "yyyy-mm-dd hh:mm:ss"
-              },
-              {
-                "name": "etime",
-                "value": "${body.stime}+${intervalTime}",
-                "format": "yyyy-mm-dd hh:mm:ss"
-              }
-            ],
-```
-
-- 参数解析
-    - name 请求的key 必选
-    - value key的值 必选
-    - nextValue 除第一次请求之外，key对应的值 非必选
-    - format 格式化模板 非必选，如果要求请求格式是日期格式，必须填写
-
-<br/>
-
-- decode
-    - 描述 解码器 返回数据是作为json格式还是text格式处理
-    - 必选：否
-    - 字段类型：string
-```json
-"deocode":"json"
-```
-
-- 默认值：text
-- 可选值：text json
-    - text 不做任何处理，返回值直接丢出去
-    - json 可以进行定制化输出，指定输出的key，则对返回值解析，获取对应的key以及值 组装新的json数据丢出去
-
-<br/>
-
-- fields
-    - 描述：在decode为json时，可以对返回值指定key输出
-    - 注意：decode为text模式时，不支持此参数， key以 . 作为层级，多个key用逗号隔开
-    - 必选： 否
-    - 字段类型：string
-    - 示例
-
-fields值为
-```
-"fields": "msg.key1,msg.key2.key3",
-```
-返回值为：
-```json
-{
-  "msg": {
-    "key1": "value1",
-    "key2": {
-      "key3": "value2",
-      "key4": "value3",
-    },
-    "key5": 2
-  }
-}
-```
-根据fields解析后的值为：
-```json
-{
-  "msg": {
-    "key1": "value1",
-    "key2": {
-      "key3": "value2"
-    }
-  }
-}
-```
-<br/>
-
-- strategy
-    - 描述 定义的key的实际值与value指定值相等时进行对应的逻辑处理
-    - 必选 否
-    - 字段类型：数组
-    - 描述：针对返回类型为json的数据，用户会指定key以及对应的value和处理方式。如果返回数据的对应的key的值正好和用户配置的value相等，则执行对应逻辑。同时用户指定的key可以来自返回值也可以来自param参数值
-
-```json
-  "strategy": [
-    {
-      "key": "${param.pageNumber}",
-      "value": "${response.totalPageNum}",
-      "handle": "stop"
-    }]
-
-```
-
-- 参数解析
-    - key 选择对应参数的key,支持的格式为
-        - 变量
-            - ${param.key}
-            - ${body.key}
-            - ${response.key}
-        - 内置变量
-            - ${currentTime}当前时间，获取当前时间，格式为yyyy-MM-dd HH:mm:ss类型
-            - ${intervalTime}间隔时间，代表参数 intervalTime 的值
-            - ${uuid} 随机字符串 32位的随机字符串
-    - value 匹配的值，支持的格式为
-        - 常量
-        - 变量：
-            - ${param.key}
-            - ${body.key}
-            - ${response.key}
-        - 内置变量
-            - ${currentTime}当前时间，获取当前时间，格式为yyyy-MM-dd HH:mm:ss类型
-            - ${intervalTime}间隔时间，代表参数 intervalTime 的值
-            - ${uuid} 随机字符串 32位的随机字符串
-    - handle 对应处理逻辑
-        - stop 停止任务
-        - retry 重试，如果重试三次都失败 任务结束
-
-<br/>
-
-- intervalTime
-    - 描述： 每次请求间隔时间，单位毫秒
-    - 必选：是
-    - 字段类型：long
+#### 1、查询SqlServer数据库版本
+SQL：`SELECT @@VERSION`
+结果：
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/662771/1576140716538-1de495e3-ec65-4650-8da1-b9368b903d77.png#align=left&display=inline&height=318&margin=%5Bobject%20Object%5D&name=image.png&originHeight=318&originWidth=822&size=32062&status=done&style=none&width=822)
 
 
+#### 2、查询当前用户权限，必须为 sysadmin 固定服务器角色的成员才允许对数据库启用CDC(变更数据捕获)功能
+SQL：`exec sp_helpsrvrolemember 'sysadmin'`
+结果：![image.png](https://cdn.nlark.com/yuque/0/2019/png/662771/1576140692007-fead968d-f99c-4344-838d-feade019519d.png#align=left&display=inline&height=262&margin=%5Bobject%20Object%5D&name=image.png&originHeight=262&originWidth=1086&size=69041&status=done&style=none&width=1086)
 
-## 三、配置示例
-```json
-{
-  "job": {
-    "content": [
-      {
-        "reader": {
-          "parameter": {
-            "protocol": "http",
-            "url": "http://wwww.a.com",
-            "requestMode": "post",
-            "decode": "json",
-            "intervalTime": 3000,
-            "fields": "msg.key1,msg.key2.key3",
-            "header": [
-              {
-                "name": "token",
-                "value": "0aeb8fd6-02f9-4c84-836a-301ede439976"
-              },
-              {
-                "name": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": [
-              {
-                "name": "stime",
-                "value": "${currentTime}",
-                "nextValue": "${body.stime}+${intervalTime}",
-                "format": "yyyy-mm-dd hh:mm:ss"
-              },
-              {
-                "name": "etime",
-                "value": "${body.stime}+${intervalTime}",
-                "format": "yyyy-mm-dd hh:mm:ss"
-              }
-            ],
-            "strategy": [
-              {
-                "key": "${response.status}",
-                "value": "3000",
-                "handle": "stop"
-              },
-              {
-                "key": "${response.currentPage}",
-                "value": "${response.totalPage}",
-                "handle": "stop"
-              }
-            ]
-          },
-          "name": "restapireader"
-        },
-        "writer": {
-          "parameter": {
-            "print": true
-          },
-          "name": "streamwriter"
-        }
-      }
-    ],
-    "setting": {
-      "restore": {
-        "isRestore": true,
-        "isStream": true
-      },
-      "speed": {
-        "channel": 1
-      }
-    }
-  }
-}
+
+#### 3、查询数据库是否已经启用CDC(变更数据捕获)功能
+SQL：`select is_cdc_enabled, name from  sys.databases where name = 'tudou'`
+结果：
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/662771/1576141038209-f0e70734-06f0-45bd-81dd-435a52741415.png#align=left&display=inline&height=142&margin=%5Bobject%20Object%5D&name=image.png&originHeight=142&originWidth=334&size=13137&status=done&style=none&width=334)
+0：未启用；1：启用
+
+
+#### 4、对数据库数据库启用CDC(变更数据捕获)功能
+SQL：
+```sql
+USE tudou  
+GO  
+EXEC sys.sp_cdc_enable_db  
+GO  
 ```
 
 
+重复第三步操作，确认数据库已经启用CDC(变更数据捕获)功能。
+
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/662771/1576141312508-ed9abbc5-2bb6-4d7c-9fef-aa399cb937a7.png#align=left&display=inline&height=148&margin=%5Bobject%20Object%5D&name=image.png&originHeight=148&originWidth=332&size=11892&status=done&style=none&width=332)
+
+#### 5、查询表是否已经启用CDC(变更数据捕获)功能
+SQL：`select name,is_tracked_by_cdc from sys.tables where name = 'test';`
+结果：
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/662771/1576141574020-ea7228f9-adc8-451b-b437-52cb2752af59.png#align=left&display=inline&height=126&margin=%5Bobject%20Object%5D&name=image.png&originHeight=126&originWidth=362&size=13602&status=done&style=none&width=362)
+0：未启用；1：启用
+
+
+#### 6、对表启用CDC(变更数据捕获)功能    
+SQL：
+```sql
+EXEC sys.sp_cdc_enable_table 
+@source_schema = 'dbo', 
+@source_name = 'test', 
+@role_name = NULL, 
+@supports_net_changes = 0;
+```
+source_schema：表所在的schema名称
+source_name：表名
+role_name：访问控制角色名称，此处为null不设置访问控制
+supports_net_changes：是否为捕获实例生成一个净更改函数，0：否；1：是
+
+
+重复第五步操作，确认表已经启用CDC(变更数据捕获)功能。
+![image.png](https://cdn.nlark.com/yuque/0/2019/png/662771/1576142069684-f80ec6bc-44a2-4b14-bebd-f379e4bf9dc3.png#align=left&display=inline&height=132&margin=%5Bobject%20Object%5D&name=image.png&originHeight=132&originWidth=364&size=13422&status=done&style=none&width=364)
+
+至此，表`test`启动CDC(变更数据捕获)功能配置完成。
+
+#### 7 数据库配置
+@supports_net_changes 需要配置
+
+参考阅读：[https://docs.microsoft.com/zh-cn/sql/relational-databases/track-changes/enable-and-disable-change-data-capture-sql-server?view=sql-server-2017](https://docs.microsoft.com/zh-cn/sql/relational-databases/track-changes/enable-and-disable-change-data-capture-sql-server?view=sql-server-2017)
