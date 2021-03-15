@@ -25,10 +25,8 @@
 1. pr 名称：[flinkx-issueid][module名称] 标题
 
 eg:
-<br/>
-[hotfix-31280][core] 修复bigdecimal转decimal运行失败问题   
-<br/>
-[feat-31372][rdb] RDB结果表Upsert模式支持选择更新策略
+- [hotfix-31280][core] 修复bigdecimal转decimal运行失败问题   
+- [feat-31372][rdb] RDB结果表Upsert模式支持选择更新策略
 
 <a name="29c80db5"></a>
 ## 开发环境
