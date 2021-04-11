@@ -73,7 +73,7 @@ mvn clean package -DskipTests
 
 
 <div align=center>
-  <img src="images/standalone1.png.png" />
+  <img src="images/standalone1.png" />
 </div>
 
 ### part4：配置flink
@@ -273,7 +273,7 @@ ps：由于Windows和Linux文件格式的差异，执行$FLINKX_HOME/bin/flinkx�
 
 
 <div align=center>
-  <img src="images/standalone2.png.png" />
+  <img src="images/standalone2.png" />
 </div>
 
 
@@ -293,7 +293,7 @@ bin/flinkx -mode standalone \
 
 
 <div align=center>
-  <img src="images/standalone3.png.png" />
+  <img src="images/standalone3.png" />
 </div>
 
 
@@ -301,7 +301,7 @@ bin/flinkx -mode standalone \
 
 
 <div align=center>
-  <img src="images/standalone4.png.png" />
+  <img src="images/standalone4.png" />
 </div>
 
 
