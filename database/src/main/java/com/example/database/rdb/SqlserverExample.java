@@ -35,7 +35,7 @@ public class SqlserverExample extends BaseJdbc {
 
     static {
         try {
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -47,7 +47,7 @@ public class SqlserverExample extends BaseJdbc {
 
 
     public void testtimestamp() throws SQLException, ClassNotFoundException {
-        try (Connection connection = DbUtil.getConnection("jdbc:jtds:sqlserver://172.16.8.149:1433", "sa", "Dtstack2018")) {
+        try (Connection connection = DbUtil.getConnection("jdbc:sqlserver://172.16.101.246:1433;database=shihu", "sa", "Abc12345")) {
             String sql = "INSERT INTO [91test].dbo.abc_test (id, name, date1, datetime1) VALUES  (?, ?, ?,? )";
             ArrayList<Object> objects = new ArrayList<>();
             objects.add(7);

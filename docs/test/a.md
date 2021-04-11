@@ -3,17 +3,17 @@
 <!-- TOC -->
 
 - [一、搭建环境](#一搭建环境)
-    - [part1：clone flinkx代码到本地](#part1clone-flinkx代码到本地)
-    - [part2：编译打包](#part2编译打包)
-    - [part3：下载flink](#part3下载flink)
-    - [part4：配置flink](#part4配置flink)
-    - [part5:下载flink shade包](#part5下载flink-shade包)
-    - [part6：拷贝](#part6拷贝)
+  - [part1：clone flinkx代码到本地](#part1clone-flinkx代码到本地)
+  - [part2：编译打包](#part2编译打包)
+  - [part3：下载flink](#part3下载flink)
+  - [part4：配置flink](#part4配置flink)
+  - [part5:下载flink shade包](#part5下载flink-shade包)
+  - [part6：拷贝](#part6拷贝)
 - [二、运行任务](#二运行任务)
-    - [part1：启动集群](#part1启动集群)
-    - [part2：进入web页面，flinkx1:8081](#part2进入web页面flinkx18081)
-    - [part3：运行任务](#part3运行任务)
-    - [part4：关闭集群](#part4关闭集群)
+  - [part1：启动集群](#part1启动集群)
+  - [part2：进入web页面，flinkx1:8081](#part2进入web页面flinkx18081)
+  - [part3：运行任务](#part3运行任务)
+  - [part4：关闭集群](#part4关闭集群)
 
 <!-- /TOC -->
 
@@ -72,7 +72,10 @@ mvn clean package -DskipTests
 同样是在上述pom文件中，找到对应的flink版本，在flink官网下载flink，这里以1.10_release分支为例，对应的flink版本为1.10.1
 
 
-![standalone4.png](https://cdn.nlark.com/yuque/0/2021/png/3003424/1616739907647-4cc3909c-7e4c-4a27-a4fe-247a620db7ca.png#align=left&display=inline&height=641&margin=%5Bobject%20Object%5D&name=standalone4.png&originHeight=641&originWidth=1115&size=31944&status=done&style=none&width=1115)
+<div align=center>
+  <img src="images/standalone1.png.png" />
+</div>
+
 ### part4：配置flink
 
 
@@ -269,9 +272,9 @@ ps：由于Windows和Linux文件格式的差异，执行$FLINKX_HOME/bin/flinkx�
 可以看到集群信息：
 
 
-![standalone5.png](https://cdn.nlark.com/yuque/0/2021/png/3003424/1616739801871-6eb2caa3-66e5-4e7f-9f25-f416b0800509.png#align=left&display=inline&height=746&margin=%5Bobject%20Object%5D&name=standalone5.png&originHeight=746&originWidth=1342&size=45745&status=done&style=none&width=1342)
-
-
+<div align=center>
+  <img src="images/standalone2.png.png" />
+</div>
 
 
 ### part3：运行任务
@@ -289,13 +292,17 @@ bin/flinkx -mode standalone \
 ```
 
 
-![standalone.png](https://cdn.nlark.com/yuque/0/2021/png/3003424/1616739829979-d00536aa-91db-47f7-baf9-36851e15e382.png#align=left&display=inline&height=863&margin=%5Bobject%20Object%5D&name=standalone.png&originHeight=863&originWidth=1545&size=60420&status=done&style=none&width=1545)
+<div align=center>
+  <img src="images/standalone3.png.png" />
+</div>
 
 
 任务运行成功，数据成功写入mysql：
 
 
-![standalone2.png](https://cdn.nlark.com/yuque/0/2021/png/3003424/1616739847340-eb3995ed-4a83-4767-849c-e16bf3f67e5a.png#align=left&display=inline&height=847&margin=%5Bobject%20Object%5D&name=standalone2.png&originHeight=847&originWidth=1559&size=63266&status=done&style=none&width=1559)
+<div align=center>
+  <img src="images/standalone4.png.png" />
+</div>
 
 
 ### part4：关闭集群

@@ -44,15 +44,16 @@ public class MysqlExample extends BaseJdbc {
     public static void main(String[] args) throws SQLException, ClassNotFoundException, InterruptedException {
 //        new JdbcExample().select();
 //        DriverManager.getConnection("jdbc:mysql://172.16.10.251:3308/tudou", "root", "abc123");
-        for (int i = 10; i < Long.MAX_VALUE; i++) {
-            new MysqlExample().testtimestamp(i);
-            Thread.sleep(300L);
-        }
+//        for (int i = 10; i < Long.MAX_VALUE; i++) {
+//            new MysqlExample().testtimestamp(i);
+//            Thread.sleep(300L);
+//        }
+        new MysqlExample().select();
     }
 
 
     public void testtimestamp(long id) throws SQLException, ClassNotFoundException {
-        try (Connection connection = DbUtil.getConnection("jdbc:mysql://localhost:3306/dujie", "root", "rootroot")) {
+        try (Connection connection = DbUtil.getConnection("jdbc:mysql://localhost:3306/dujie?serverTimezone=Asia/Shanghai", "root", "rootroot")) {
             String sql = "INSERT INTO dujie.test1 (id, user_id, name) VALUES (?, ?, ?)";
             ArrayList<Object> objects = new ArrayList<>();
             objects.add(id);
@@ -63,8 +64,8 @@ public class MysqlExample extends BaseJdbc {
     }
 
     public void select() throws SQLException, ClassNotFoundException {
-        try (Connection connection = DbUtil.getConnection("jdbc:mysql://127.0.0.1:3306/dujie?useSSL=false", "root", "rootroot")) {
-            String sql = "SELECT * FROM `kudu`";
+        try (Connection connection = DbUtil.getConnection("jdbc:mysql://127.0.0.1:3306/dujie?useSSL=false&serverTimezone=GMT%2B8", "root", "rootroot")) {
+            String sql = "SELECT * FROM `temp`";
             queryBystream(connection, sql);
         }
     }

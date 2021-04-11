@@ -37,11 +37,11 @@ public class kafkaTest {
         Properties props = new Properties();
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        props.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, 86400000);
+        props.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, 1000);
         props.put(ProducerConfig.RETRIES_CONFIG, 1000000);
         props.put(ProducerConfig.MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION, 1);
-        props.put("delivery.timeout.ms", 1000);
-        props.put("bootstrap.servers", "flinkx1:9092");
+        props.put("bootstrap.servers", "192.168.106.110:9092");
+
 
         KafkaProducer producer = new KafkaProducer<>(props);
 
@@ -70,8 +70,8 @@ public class kafkaTest {
             if (flag) {
                 flag = i++ < 100;
                 int finalI = i;
-                Object test = producer.send(new ProducerRecord<>("test", i + "", i + "")).get(60000, TimeUnit.MILLISECONDS);
-                System.out.println(test);
+//                Object test = producer.send(new ProducerRecord<>("test", i + "", i + "")).get(60000, TimeUnit.MILLISECONDS);
+//                System.out.println(test);
                 producer.send(new ProducerRecord<>("test", i + "", i + ""), (metadata, exception) -> {
                     if (Objects.nonNull(exception)) {
                         String errorMessage = String.format("send data failed,data 【%s】 ,error info  %s", finalI, exception.getCause());

@@ -18,19 +18,19 @@
 package com.example.database.rdb;
 
 import com.example.database.BaseJdbc;
-import com.google.common.collect.Lists;
 import org.apache.commons.lang3.RandomUtils;
 import util.DbUtil;
-import util.FileUtil;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLType;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
-import java.util.UUID;
+import java.util.HashMap;
 import java.util.concurrent.atomic.LongAdder;
 
 /**
@@ -49,50 +49,51 @@ public class OracleExample extends BaseJdbc {
     //index 10 batchsizee 11 100  310 3000 102 101
     public static void main(String[] args) throws ClassNotFoundException, InterruptedException {
         String mysqlDriven = "oracle.jdbc.driver.OracleDriver";
-
+//
         Class.forName(mysqlDriven);
+//        test(1);
 
-
-        long start = System.currentTimeMillis();
-        System.out.println("开始时间" + new Timestamp(start));
-        for (int index = 0; index < 10; index++) {
-//            insertBatch(0, 10);
-//            test(index++);
-        }
-        long prevSum = 0;
-//        select();
-        //开始
-        //结束
-        OracleExample oracleExample = new OracleExample();
-        String dataTemplate = "{%s:%s}";
-        int index = 1;
-        while (true) {
-            ArrayList<String> data = new ArrayList<>(8000000);
-            for (int i = (8000000 * (index - 1)); i < 8000000 * index; i++) {
-                ArrayList<Integer> ids = new ArrayList<>();
-                String insert = "insert into \"test23\" values(?,?,?)";
-                String update = "update \"test23\" set \"name\" =? where \"id\" =?";
-                String delete = "delete from \"test23\" where  \"id\" =? ";
-                try (Connection connection = DbUtil.getConnection("jdbc:oracle:thin:@172.16.100.42:1521:ORCL", "tudou", "abc123")) {
-                    ids.add(i);
-                    oracleExample.execute(connection, insert, Lists.newArrayList(i, UUID.randomUUID().toString().substring(1, RandomUtils.nextInt(1, 13)), i++));
-                    data.add(String.format(dataTemplate, i, "insert"));
-
-                    oracleExample.execute(connection, update, Lists.newArrayList(UUID.randomUUID().toString().substring(1, RandomUtils.nextInt(1, 13)), i));
-                    data.add(String.format(dataTemplate, i, "update"));
-
-                    if (RandomUtils.nextInt(1, 10) < 7) {
-                        oracleExample.execute(connection, delete, Lists.newArrayList(i));
-                        data.add(String.format(dataTemplate, i, "delete"));
-                    }
-
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-            FileUtil.writeData(data, "/Users/yanghuai/IdeaProjects/myProject/database/tmp/oracle" + index + ".txt");
-            index++;
-        }
+        select();
+//        long start = System.currentTimeMillis();
+//        System.out.println("开始时间" + new Timestamp(start));
+//        for (int index = 0; index < 10; index++) {
+////            insertBatch(0, 10);
+////            test(index++);
+//        }
+//        long prevSum = 0;
+////        select();
+//        //开始
+//        //结束
+//        OracleExample oracleExample = new OracleExample();
+//        String dataTemplate = "{%s:%s}";
+//        int index = 1;
+//        while (true) {
+//            ArrayList<String> data = new ArrayList<>(8000000);
+//            for (int i = (8000000 * (index - 1)); i < 8000000 * index; i++) {
+//                ArrayList<Integer> ids = new ArrayList<>();
+//                String insert = "insert into \"test23\" values(?,?,?)";
+//                String update = "update \"test23\" set \"name\" =? where \"id\" =?";
+//                String delete = "delete from \"test23\" where  \"id\" =? ";
+//                try (Connection connection = DbUtil.getConnection("jdbc:oracle:thin:@172.16.100.42:1521:ORCL", "tudou", "abc123")) {
+//                    ids.add(i);
+//                    oracleExample.execute(connection, insert, Lists.newArrayList(i, UUID.randomUUID().toString().substring(1, RandomUtils.nextInt(1, 13)), i++));
+//                    data.add(String.format(dataTemplate, i, "insert"));
+//
+//                    oracleExample.execute(connection, update, Lists.newArrayList(UUID.randomUUID().toString().substring(1, RandomUtils.nextInt(1, 13)), i));
+//                    data.add(String.format(dataTemplate, i, "update"));
+//
+//                    if (RandomUtils.nextInt(1, 10) < 7) {
+//                        oracleExample.execute(connection, delete, Lists.newArrayList(i));
+//                        data.add(String.format(dataTemplate, i, "delete"));
+//                    }
+//
+//                } catch (SQLException throwables) {
+//                    throwables.printStackTrace();
+//                }
+//            }
+//            FileUtil.writeData(data, "/Users/yanghuai/IdeaProjects/myProject/database/tmp/oracle" + index + ".txt");
+//            index++;
+//        }
 //        while (true) {
 //            long l = System.currentTimeMillis();
 //            Thread.sleep(5000);
@@ -111,20 +112,22 @@ public class OracleExample extends BaseJdbc {
 
     public static void test(int id) {
         PreparedStatement ps = null;
-        try (Connection connection = DbUtil.getConnection("jdbc:oracle:thin:@172.16.100.42:1521:ORCL", "roma_logminer", "abc123")) {
-            String sql = "INSERT INTO \"ROMA_LOGMINER\".\"test\" (\"id\") values (?)  ";
-            ps = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        try (Connection connection = DbUtil.getConnection("jdbc:oracle:thin:@//169.169.19.73:1521:orclapp3", "XTFS", "xtfs")) {
             connection.setAutoCommit(false);
-            int i = 0;
+            String sql = "SELECT * FROM \"XTFS\".\"BIZ_FEE_DOCUMENTS\" WHERE 1=1  AND BIZ_FEE_DOCUMENTS.BUSINESS_TYPE is not  null  and BIZ_FEE_DOCUMENTS.BFD_ID in (244,245,246)";
+            ps = connection.prepareStatement(sql);
+            int i = 1;
             while (true) {
-                ps.setObject(1, i++);
+                ps.setObject(1, i);
+                ps.setObject(2, i);
+                ps.setObject(3, i);
 //                ps.addBatch();
-                ps.execute();
-                if (i == 10) {
-//                    ps.executeBatch();
+                ps.addBatch();
+                i++;
+                if (i % 8000 == 1) {
+                    ps.executeBatch();
 //                    ps.clearBatch();
-                    i = 0;
-                    connection.commit();
+//                    i = 0;
                 }
             }
         } catch (SQLException sqlException) {
@@ -139,15 +142,25 @@ public class OracleExample extends BaseJdbc {
     public static void select() {
         PreparedStatement ps;
         ResultSet resultSet;
-        try (Connection connection = DbUtil.getConnection("jdbc:oracle:thin:@172.16.8.193:1521:xe", "system", "oracle")) {
-            String sql = "select * from HR.TEST  where ID =12 ";
+        try (Connection connection = DbUtil.getConnection("jdbc:oracle:thin:@169.169.19.73:1521:orclapp3", "XTFS", "xtfs")) {
+            String sql = "SELECT * FROM \"XTFS\".\"BIZ_FEE_DOCUMENTS\" WHERE 1=1  AND BIZ_FEE_DOCUMENTS.BUSINESS_TYPE is not  null  and BIZ_FEE_DOCUMENTS.BFD_ID in (244,245,246)";
+            ResultSet columns = connection.getMetaData().getColumns("orclapp3", "XTFS", "BIZ_FEE_DOCUMENTS", null);
+            ArrayList<HashMap> ret = new ArrayList<>();
+            while (columns.next()) {
+                HashMap hashMap = new HashMap<>();
+                hashMap.put(columns.getString("COLUMN_NAME"), columns.getString("DATA_TYPE"));
+                ret.add(hashMap);
+            }
             System.out.println(sql);
             ps = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
             resultSet = ps.executeQuery();
-
+            int i = 0;
             while (resultSet.next()) {
-                Timestamp timestamp = resultSet.getTimestamp(4);
-                System.out.println(timestamp);
+                while (i != ret.size()) {
+                    Object timestamp = resultSet.getObject(++i);
+                    System.out.println(timestamp);
+                }
+                i=0;
             }
 
         } catch (SQLException sqlException) {
